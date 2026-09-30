@@ -6,4 +6,6 @@ Route::get('/',[App\Http\Controllers\FrontController::class, 'index'])->name('in
 
 Route::get('shop-item/{id}', [App\Http\Controllers\FrontController::class, 'shopItem'])->name('shop-item');
 
+Route::get('items-category/{category_id}', [App\Http\Controllers\FrontController::class, 'itemCategory'])->name('items.category');
+
 Route::get('/admin', [App\Http\Controllers\DashboardController::class, 'index'])->name('admin.index');
