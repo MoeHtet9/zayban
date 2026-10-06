@@ -4,7 +4,7 @@
         <div class="container-fluid px-4">
             <div class="my-3">
                 <h1 class="mt-4 d-inline">Payments</h1>
-                <a href="" class="btn btn-primary float-end">Create Payment</a>
+                <a href="{{route('admin.payments.create')}}" class="btn btn-primary float-end">Create Payment</a>
             </div>
             <ol class="breadcrumb mb-4">
                 <li class="breadcrumb-item"><a href="{{route('admin.index')}}">Dashboard</a></li>
