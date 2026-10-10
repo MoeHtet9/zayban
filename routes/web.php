@@ -13,6 +13,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
     Route::resource('categories', App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('orders', App\Http\Controllers\Admin\OrderController::class);
     Route::resource('payments', App\Http\Controllers\Admin\PaymentController::class);
+    Route::resource('users', App\Http\Controllers\Admin\UserController::class);
 });
 
 Auth::routes();

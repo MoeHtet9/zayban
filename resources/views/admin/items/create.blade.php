@@ -3,11 +3,11 @@
 <div class="container-fluid px-4">
     <div class="my-3">
         <h1 class="mt-4 d-inline">Create Item</h1>
-        <a href="" class="btn btn-danger float-end">Back</a>
+        <a href="{{route('admin.items.index')}}" class="btn btn-danger float-end">Back</a>
     </div>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
-        <li class="breadcrumb-item"><a href="">Items</a></li>
+        <li class="breadcrumb-item"><a href="{{route('admin.index')}}">Dashboard</a></li>
+        <li class="breadcrumb-item"><a href="{{route('admin.items.index')}}">Items</a></li>
         <li class="breadcrumb-item active">Create Item</li>
     </ol>
 
@@ -17,45 +17,71 @@
             Create Item
         </div>
         <div class="card-body">
-        <form action="" method="post" enctype="multipart/form-data">
-            
+        <form action="{{route('admin.items.store')}}" method="post" enctype="multipart/form-data">
+            @csrf
             <div class="mb-3">
                 <label for="code-no" class="form-label">Code No</label>
-                <input type="text" class="form-control" name="code_no" id="code-no" >
-               
+                <input type="text" class="form-control @error('code_no') is-invalid @enderror" name="code_no" id="code-no" value="{{old('code_no')}}">
+                @error('code_no')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="name" class="form-label">Item Name</label>
-                <input type="text" class="form-control" name="name" id="name">
+                <input type="text" class="form-control @error('name') is-invalid @enderror" name="name" id="name" value="{{old('name')}}">
+                @error('name')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="image" class="form-label">Image</label>
-                <input type="file" accept="image/*" class="form-control" name="image" id="image">
+                <input type="file" accept="image/*" class="form-control @error('image') is-invalid @enderror" name="image" id="image"  value="{{old('image')}}">
+                @error('image')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="price" class="form-label">Price</label>
-                <input type="text" class="form-control" name="price" id="price">
+                <input type="text" class="form-control @error('price') is-invalid @enderror" name="price" id="price" value="{{old('price')}}">
+                @error('price')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="discount" class="form-label">Discount</label>
-                <input type="text" class="form-control" name="discount" id="discount">
+                <input type="text" class="form-control @error('discount') is-invalid @enderror" name="discount" id="discount" value="{{old('discount')}}">
+                @error('discount')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="inStock" class="form-label">InStock</label>
-                <select class="form-select" name="in_stock" id="inStock">
+                <select class="form-select @error('inStock') is-invalid @enderror" name="in_stock" id="inStock" value="{{old('in_stock')}}">
                     <option value="1" selected>Yes</option>
-                    <option value="0">No</option>
+                    <option value="0" >No</option>
                 </select>
+                @error('in_stock')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="category" class="form-label">Category</label>
-                <select class="form-select" name="category_id">
+                <select class="form-select @error('category') is-invalid @enderror" name="category_id" value="{{old('category_id')}}">
                     <option value="">Choose Category</option>
+                    @foreach($categories as $category)
+                        <option value="{{$category->id}}" {{old('category_id') == $category->id ? 'selected':''}} > {{$category->name}}</option>
+                    @endforeach
                 </select>
+                @error('category')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
                 <label for="description">Description</label>
-                <textarea name="description" id="description" class="form-control"></textarea>
+                <textarea name="description" id="description" class="form-control @error('description') is-invalid @enderror"> {{old('description')}} </textarea>
+                @error('description')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="d-grid gap-2">
                 <button class="btn btn-primary" type="submit">Save</button>

@@ -17,24 +17,35 @@
             New Payment
         </div>
         <div class="card-body">
-        <form action="" method="post" enctype="multipart/form-data">
-            
+        <form action="{{route('admin.payments.store')}}" method="post" enctype="multipart/form-data">
+            @csrf
             <div class="mb-3">
-                <label for="code-no" class="form-label">Payment Name</label>
-                <input type="text" class="form-control" name="code_no" id="code-no" >
-               
+                <label for="pay" class="form-label">Payment Name</label>
+                <input type="text" class="form-control @error('pay') is-invalid @enderror" name="pay" id="pay" value="{{old('pay')}}">
+                @error('pay')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
-                <label for="image" class="form-label">Payment Logo</label>
-                <input type="file" accept="image/*" class="form-control" name="image" id="image">
+                <label for="logo" class="form-label">Payment Logo</label>
+                <input type="file" accept="logo/*" class="form-control @error('logo') is-invalid @enderror" name="logo" id="logo" value="{{old('logo')}}">
+                @error('logo')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
-                <label for="name" class="form-label">Account Name</label>
-                <input type="text" class="form-control" name="name" id="name">
+                <label for="acc_name" class="form-label">Account Name</label>
+                <input type="text" class="form-control @error('acc_name') is-invalid @enderror" name="acc_name" id="acc_name" value="{{old('acc_name')}}">
+                @error('acc_name')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="mb-3">
-                <label for="price" class="form-label">Account Number</label>
-                <input type="text" class="form-control" name="price" id="price">
+                <label for="acc_no" class="form-label">Account Number</label>
+                <input type="number" class="form-control @error('acc_no') is-invalid @enderror" name="acc_no" id="acc_no" value="{{old('acc_no')}}">
+                @error('acc_no')
+                    <div class="invalid-feedback">{{$message}}</div>
+                @enderror
             </div>
             <div class="d-grid gap-2">
                 <button class="btn btn-primary" type="submit">Save</button>

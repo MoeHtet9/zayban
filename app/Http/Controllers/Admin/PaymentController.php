@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Payment;
+use App\Http\Requests\PaymentRequest;
 class PaymentController extends Controller
 {
     /**
@@ -27,9 +28,23 @@ class PaymentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(PaymentRequest $request)
     {
-        //
+        // dd($request);
+        $payment = Payment::create($request->all());
+
+        // file upload
+        $file_name = time().'.'.$request->logo->extension();//2242143142.jpg
+
+        $upload = $request->logo->move(public_path('images/payments/'), $file_name); // folder upload
+
+        if ($upload) {
+            $payment->logo = "/images/payments/".$file_name;
+        }
+
+        $payment->save();
+
+        return redirect()->route('admin.payments.index');
     }
 
     /**
@@ -45,7 +60,8 @@ class PaymentController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $payment = Payment::find($id);
+        return view('admin.payments.edit', compact('payment'));
     }
 
     /**
@@ -53,7 +69,24 @@ class PaymentController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $payment = Payment::find($id);
+        $payment->update($request->all());
+
+        if($request->hasFile('logo')) {
+            // file upload
+            $file_name = time().'.'.$request->logo->extension();//2242143142.jpg
+
+            $upload = $request->logo->move(public_path('images/payments/'), $file_name); // folder upload
+
+            if ($upload) {
+                $payment->logo = "/images/payments/".$file_name;
+            }
+        }else{
+            $payment->logo = $request->old_logo;
+        }
+
+        $payment->save();
+        return redirect()->route('admin.payments.index');
     }
 
     /**

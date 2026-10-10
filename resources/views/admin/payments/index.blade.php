@@ -21,18 +21,18 @@
                             <tr>
                                 <th>No.</th>
                                 <th>pay</th>
-                                <th>logo</th>   
                                 <th>acc_no</th> 
                                 <th>acc_name</th>
+                                <th>Action</th>
                             </tr>
                         </thead>
                         <tfoot>
                             <tr>
                                 <th>No.</th>
                                 <th>pay</th>
-                                <th>logo</th>   
                                 <th>acc_no</th> 
                                 <th>acc_name</th>
+                                <th>Action</th>
                             </tr>
                         </tfoot>
                         <tbody>
@@ -43,9 +43,12 @@
                                 <tr>
                                     <td>{{$i++}}</td>
                                     <td>{{$payment->pay}}</td>
-                                    <td>{{$payment->logo}}</td>
                                     <td>{{$payment->acc_no}}</td>
                                     <td>{{$payment->acc_name}}</td>
+                                    <td>
+                                        <a href="" class="btn btn-sm btn-danger">Delete</a>
+                                        <a href="{{route('admin.payments.edit', $payment->id)}}" class="btn btn-sm btn-warning">Edit</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>            
