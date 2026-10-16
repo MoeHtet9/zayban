@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\UserRequest;
+use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     /**
@@ -41,6 +42,8 @@ class UserController extends Controller
         if ($upload) {
             $user->profile = "/images/users/".$file_name;
         }
+
+        $user->password = Hash::make($request->password);
 
         $user->save();
         return redirect()->route('admin.users.index');

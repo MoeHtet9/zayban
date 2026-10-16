@@ -56,7 +56,12 @@
             </div>
             <div class="mb-3">
                 <label for="role" class="form-label">Role</label>
-                <input type="role" class="form-control @error('role') is-invalid @enderror" name="role" id="role" value="{{old('role')}}">
+                <select class="form-select @error('role') is-invalid @enderror" name="role" value="{{old('role')}}">
+                    <option value="">Choose Role</option>
+                    <option value="user">User</option>
+                    <option value="admin">Admin</option>
+                    <option value="staff">Staff</option>
+                </select>
                 @error('role')
                     <div class="invalid-feedback">{{$message}}</div>
                 @enderror

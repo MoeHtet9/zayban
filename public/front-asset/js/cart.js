@@ -6,6 +6,7 @@ $(document).ready(function(){
         let price = $(this).data('price');
         let discount = $(this).data('discount');
         let image = $(this).data('image');
+        let qty = $('.qty').val();
 
         console.log(id, name, price);
 
@@ -15,7 +16,7 @@ $(document).ready(function(){
             price: price,
             discount: discount,
             image: image,
-            qty: 1
+            qty: qty
         }
 
         let itemString = localStorage.getItem('zayban');
@@ -29,7 +30,7 @@ $(document).ready(function(){
         let status = false;
         $.each(itemArray,function(i,v){
             if(v.id == id) {
-                v.qty++;
+                v.qty = Number(v.qty) + Number(qty);
                 status = true;
             }
         })
@@ -73,24 +74,28 @@ $(document).ready(function(){
             $.each(itemArray, function(i,v){
                 let name = v.name;
                 let price = v.price;
+                let image = v.image;
+                let discount = v.discount;
                 let qty = v.qty;
 
                 data += `<tr>
                             <td>${j++}</td>
                             <td>${name}</td>
+                            <td><img src="${image}" width="50"></td>
+                            <td>${discount}</td>
                             <td>${price} MMK</td>
                             <td>
-                                <button class="min" data-key="${i}"> - </button>
+                                <button class="min btn btn-sm btn-outline-secondary" data-key="${i}"> - </button>
                                 ${qty}
-                                <button class="max" data-key="${i}"> + </button>
+                                <button class="max btn btn-sm btn-outline-secondary" data-key="${i}"> + </button>
                             </td>
-                            <td>${price * qty} MMK</td>
+                            <td>${Math.round(price - (price*(discount/100))) * qty} MMK</td>
                         </tr>`;
 
-                        total += price * qty;
+                        total += Math.round(price - (price*(discount/100))) * qty;
             })
             data += `<tr>
-                        <td colspan="4" align="center">Total</td>
+                        <td colspan="6" align="center">Total</td>
                         <td>${total} MMK</td>
                     </tr>`;
             $('#tbody').html(data);

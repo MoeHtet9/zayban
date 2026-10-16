@@ -5,6 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
+        <meta name="csrf-token" content="{{ csrf_token() }}">
         <title>စျေးဗန်း - Shop in one place</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
@@ -37,14 +38,41 @@
                         </li>
                     </ul>
                     <form class="d-flex">
-                        <button class="btn btn-outline-dark" type="submit">
+                        <a class="btn btn-outline-dark" href="{{route('items.cart')}}">
                             <i class="bi-cart-fill me-1"></i>
                             Cart
                             <span class="badge bg-dark text-white ms-1 rounded-pill" id="item-count">0</span>
-                        </button>
+                        </a>
                     </form>
-                    <a href="/login" class="btn mx-3">Login</a>
-                    <a href="/register" class="btn btn-dark">Register</a>
+                    @guest
+                        <a href="/login" class="btn mx-3">Login</a>
+                        <a href="/register" class="btn btn-dark">Register</a>
+                    @else
+                         <div class="dropdown mx-3">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                {{Auth::user()->name}}
+                            </a>
+                            <ul class="dropdown-menu">
+                                @if(Auth::user()->role == 'user')
+                                    <li><a class="dropdown-item" href="#">Profile</a></li>
+                                @else
+                                    <li><a class="dropdown-item" href="/admin">Admin Panel</a></li>
+                                @endif
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <a class="dropdown-item" href="{{ route('logout') }}"
+                                       onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                        {{ __('Logout') }}
+                                    </a>
+
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    @endif
                 </div>
             </div>
         </nav>
@@ -61,6 +89,6 @@
         <!-- Core theme JS-->
         <script src="{{asset('front-asset/js/scripts.js')}}"></script>
         <script src="{{asset('front-asset/js/cart.js')}}"></script>
-
+        @yield('script')
     </body>
 </html>

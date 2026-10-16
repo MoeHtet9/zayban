@@ -17,7 +17,7 @@
             Create Category
         </div>
         <div class="card-body">
-        <form action="{{route('admin.categories.store')}}" method="post" enctype="multipart/form-data">
+        <form id="c_form" action="{{route('admin.categories.store')}}" method="post" enctype="multipart/form-data">
             @csrf
             <div class="mb-3">
                 <label for="code-no" class="form-label">Category Name</label>
@@ -33,4 +33,40 @@
         </div>
     </div>
 </div>
+
+@endsection
+@section('script')
+
+    <script>
+        $(document).ready(function() {
+
+            // Laravel ajax setup
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            $('#c_form').on('submit', function(e) {
+                e.preventDefault();
+
+                let formData = new FormData(this);
+
+                $.ajax({
+                    type: 'POST',
+                    url: "{{route('admin.categories.store')}}",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if(response){
+                            alert('Create Success');
+                        }
+                    }
+                })
+            });
+
+        })
+    </script>
+
 @endsection

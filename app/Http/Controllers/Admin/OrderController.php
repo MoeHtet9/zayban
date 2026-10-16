@@ -10,57 +10,60 @@ class OrderController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $orders = Order::orderBy('id', 'desc')->paginate(15);
-        return view('admin.orders.index', compact('orders'));
+    public function orders() {
+        $orders = Order::all();
+
+        $voucherGroup = $orders->groupBy('voucher_no')->toArray();
+
+        $orderData = [];
+        foreach($voucherGroup as $voucher) {
+            $orderID = array_column($voucher, 'id');// array တွေထဲက order id တွေကကိုယူ
+            print_r($orderID);
+            $orderData[] = Order::whereIn('id', $orderID)->where('status','Pending')->first();//voucher no တူတဲ့ order တွေထဲက ပထမဆုံး id တစ်ခုရဲ့ data တွေကို ဆွဲထုပ်ပြီး array ထဲကိုထည့်
+        }
+        // dd($orderData);
+        return view('admin.orders.index', compact('orderData'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+    public function orderAccept() {
+        $orders = Order::all();
+
+        $voucherGroup = $orders->groupBy('voucher_no')->toArray();
+
+        $orderData = [];
+        foreach($voucherGroup as $voucher) {
+            $orderID = array_column($voucher, 'id');
+            print_r($orderID);
+            $orderData[] = Order::whereIn('id', $orderID)->where('status','Accept')->first();
+        }
+        // dd($orderData);
+        return view('admin.orders.index', compact('orderData'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+    public function orderComplete() {
+        $orders = Order::all();
+
+        $voucherGroup = $orders->groupBy('voucher_no')->toArray();
+
+        $orderData = [];
+        foreach($voucherGroup as $voucher) {
+            $orderID = array_column($voucher, 'id');
+            print_r($orderID);
+            $orderData[] = Order::whereIn('id', $orderID)->where('status','Complete')->first();
+        }
+        // dd($orderData);
+        return view('admin.orders.index', compact('orderData'));
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
+    public function orderDetail($voucherNo) {
+        $orders = Order::where('voucher_no', $voucherNo)->get();
+        $orderFirst = Order::where('voucher_no', $voucherNo)->first();
+        return view('admin.orders.detail', compact('orders','orderFirst'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
+    public function statusUpdate(Request $request, $voucherNo) {
+        Order::where('voucher_no', $voucherNo)->update(['status' => $request->status]);
+        return redirect()->route('admin.orders');
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
-    }
 }

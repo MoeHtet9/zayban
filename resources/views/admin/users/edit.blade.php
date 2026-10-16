@@ -62,7 +62,12 @@
             </div>
             <div class="mb-3">
                 <label for="role" class="form-label">Role</label>
-                <input type="role" class="form-control @error('role') is-invalid @enderror" name="role" id="role" value="{{$user->role}}">
+                <select class="form-select @error('role') is-invalid @enderror" name="role" value="{{old('role')}}">
+                    <option value="">Choose Role</option>
+                    <option value="user" {{$user->role == 'user' ? 'selected':''}}>User</option>
+                    <option value="admin" {{$user->role == 'admin' ? 'selected':''}}>Admin</option>
+                    <option value="staff" {{$user->role == 'staff' ? 'selected':''}}>Staff</option>
+                </select>
                 @error('role')
                     <div class="invalid-feedback">{{$message}}</div>
                 @enderror
